@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management | Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="bg-blue-500 p-4 text-white flex justify-between">
+            <h1>EVENT MANAGEMENT</h1>
+            <ul class="flex gap-4">
+                <li><a href="{% url "organizer_dashboard" %}">Dashboard</a></li>
+                <li><a href="{% url "create-event" %}">Create Event</a></li>
+                <li><a href="{% url "create-category" %}">Create Category</a></li>
+                <li><a href="{% url "create-participant" %}">Create Paricipant</a></li>
+            </ul>
+        </nav>
+        <div class="stats-grid grid grid-cols-4 gap-4 p-4">
+            <div class="card shadow-lg bg-blue-300 rounded p-2 text-center text-2xl">
+                <h2>Paticipants</h2>
+                <p>{{counts.participants}}</p>
+            </div>
+            <a href="{% url 'organizer_dashboard' %}" class="card shadow-lg bg-blue-300 rounded p-2 text-center text-2xl">
+                <h2>Events</h2>
+                <p>{{counts.total}}</p>
+            </a>
+            <a href="{% url 'organizer_dashboard' %}?type=upcoming-events" class="card shadow-lg bg-blue-300 rounded p-2 text-center text-2xl">
+                <h2>Upcoming Events</h2>
+                <p>{{counts.upcoming}}</p>
+            </a>
+            <a href="{% url 'organizer_dashboard' %}?type=past-events" class="card shadow-lg bg-blue-300 rounded p-2 text-center text-2xl">
+                <h2>Past</h2>
+                <p>{{counts.past}}</p>
+            </a>
+        </div>
+    </header>
+    <main class="my-10">
+        <div class="flex justify-between items-center p-4">
+            <h2 class="text-4xl px-4">{{title}}</h2>
+            <form method="GET" action="{% url 'organizer_dashboard' %}" class="search flex items-center gap-4">
+                <input value="{{search}}" type="text" name="search" id="search" class="w-[255px] p-2 my-4 border rounded" placeholder="Search Event by name or location">
+                <button class="bg-gray-800 hover:bg-gray-900 p-2 rounded text-white" type="submit">Search</button>
+            </form>
+        </div>
+        <div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="px-2 py-1 {% if message.tags == 'success' %}bg-green-500{% endif %} ">{{message}}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="events grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+            {% for event in events %}
+            <div class="event space-y-3 border p-4 bg-white shadow-md rounded-lg">
+                <img src="{% static "images/event.webp" %}" alt="" class="rounded-lg w-full">
+                <h3 class="text-xl font-semibold">{{event.name}}</h3>
+                <div class="flex justify-between text-gray-500">
+                    <p>{{event.category.name}}</p>
+                    <p>{{event.location}}</p>
+                </div>
+                <div class="flex justify-between">
+                    <p>{{event.date}}</p>
+                    <p>{{event.time}}</p>
+                </div>
+                <div class="flex justify-between items-center">
+                    <p>Guests: {{event.participants.count}}</p>
+                    <div class="flex gap-4">
+                        <a class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" href="{% url 'update_event' event.id%}">Edit</a>
+                        <form action="{% url "delete_event" event.id%}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Del</button>
+                        </form>
+                        <a class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" href="{% url "show_event" event.id%}">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>
