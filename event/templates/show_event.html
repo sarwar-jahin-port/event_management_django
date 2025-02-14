@@ -27,7 +27,7 @@
             <h2 class="text-xl font-semibold mb-2">Participants</h2>
             <ul class="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {% for participant in event.participants.all %}
-                    <li class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-center">{{participant.name}}</li>
+                    <li class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-center">{{participant.first_name}}</li>
                 {% endfor %}
             </ul>
         </div>

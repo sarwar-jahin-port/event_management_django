@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from event.forms import EventModelForm, CategoryModelForm, ParticipantModelForm
+from event.forms import EventModelForm, CategoryModelForm
 from django.contrib import messages
 from event.models import Event
 from django.utils import timezone
@@ -93,14 +93,14 @@ def create_category(request):
     context = {"category_form": category_form}
     return render(request, 'create_category.html', context)
 
-def create_participant(request):
-    participant_form = ParticipantModelForm()
+# def create_participant(request):
+#     participant_form = ParticipantModelForm()
 
-    if request.method == 'POST':
-        participant_form = ParticipantModelForm(request.POST)
-        if participant_form.is_valid():
-            participant_form.save()
-            messages.success(request, 'Participant created successfully')
-            return redirect('create-participant')
-    context = {"participant_form": participant_form}
-    return render(request, 'create_participant.html', context)
+#     if request.method == 'POST':
+#         participant_form = ParticipantModelForm(request.POST)
+#         if participant_form.is_valid():
+#             participant_form.save()
+#             messages.success(request, 'Participant created successfully')
+#             return redirect('create-participant')
+#     context = {"participant_form": participant_form}
+#     return render(request, 'create_participant.html', context)

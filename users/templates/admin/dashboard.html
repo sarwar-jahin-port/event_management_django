@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <nav class="bg-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="font-bold text-xl text-gray-800">Admin Dashboard</div>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-700">Welcome, {{user.username}}</span> <form action="{% url "logout" %}" method="post"> {% csrf_token %} <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">User List</h2>
+
+            <div class="mb-4">
+                <input type="text" placeholder="Search users..." class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto border-collapse border border-gray-200">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border border-gray-200 px-4 py-2">ID</th>
+                            <th class="border border-gray-200 px-4 py-2">Username</th>
+                            <th class="border border-gray-200 px-4 py-2">Email</th>
+                            <th class="border border-gray-200 px-4 py-2">First Name</th>
+                            <th class="border border-gray-200 px-4 py-2">Last Name</th>
+                            <th class="border border-gray-200 px-4 py-2">Role</th>
+                            <th class="border border-gray-200 px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for user in users %}
+                        <tr>
+                            <td class="border border-gray-200 px-4 py-2">{{forloop.counter}}</td>
+                            <td class="border border-gray-200 px-4 py-2">{{user.username}}</td>
+                            <td class="border border-gray-200 px-4 py-2">{{user.email}}</td>
+                            <td class="border border-gray-200 px-4 py-2">{{user.first_name}}</td>
+                            <td class="border border-gray-200 px-4 py-2">{{user.last_name}}</td>
+                            <td class="border border-gray-200 px-4 py-2">{{user.group_name}}</td>
+                            <td class="border border-gray-200 px-4 py-2">
+                                <form action="{% url "assign-role" user.id %}">
+                                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline text-sm ml-1">Change Role</button>
+                                </form>
+                            </td>
+                        </tr>
+                      {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
