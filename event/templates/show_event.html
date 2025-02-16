@@ -11,8 +11,23 @@
     <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 space-y-6">
         <h1 class="text-3xl font-bold text-center text-gray-900">{{event.name}}</h1>
         <div class="w-full flex justify-center">
-            <img src="{% static "images/event.webp" %}" alt="Event Image" class="rounded-lg shadow-md w-full md:w-3/4">
+            {% if event.image %}
+                <img src="{{ event.image.url }}" alt="{{ event.name }}" class="rounded-lg shadow-md w-full md:w-3/4">
+            {% else %}
+                <img src="{% static "images/event.webp" %}" alt="Default Event Image" class="rounded-lg shadow-md w-full md:w-3/4">
+            {% endif %}
         </div>
+        <form action="{% url "rsvp" event.id %}" method="POST" class="flex items-center gap-2">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="p-1 bg-blue-400 rounded text-white">
+                {% if rsvped %}
+                    Not Interested
+                {% else %}
+                    Attend
+                {% endif %}
+            </button>
+        </form>
         <article class="text-gray-700 leading-relaxed">
             <p>{{event.description}}</p>
         </article>

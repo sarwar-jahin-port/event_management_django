@@ -1,24 +1,6 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-</head>
-<body class="bg-gray-100 font-sans">
-
-    <nav class="bg-white p-4 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="font-bold text-xl text-gray-800">Admin Dashboard</div>
-            <div class="flex items-center space-x-4">
-                <span class="text-gray-700">Welcome, {{user.username}}</span> <form action="{% url "logout" %}" method="post"> {% csrf_token %} <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-
+{% block content %}
     <div class="container mx-auto mt-8">
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">User List</h2>
@@ -61,6 +43,4 @@
             </div>
         </div>
     </div>
-
-</body>
-</html>
+    {% endblock content %}

@@ -102,8 +102,8 @@ class CustomRegistrationForm(StyledFormMixin, UserCreationForm):
         return cleaned_data
 
 class LoginForm(StyledFormMixin, AuthenticationForm):
-    def __init__(self, request = ..., *args, **kwargs):
-        super().__init__(request, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 class CreateGroupForm(StyledFormMixin, forms.ModelForm):
     permissions = forms.ModelMultipleChoiceField(

@@ -11,17 +11,10 @@ class Event(models.Model):
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='participants')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='event_images', blank=True, null=True)
 
     def __str__(self):
         return self.name
-
-# class Participant(models.Model):
-#     name = models.CharField(max_length=100)
-#     email = models.EmailField()
-#     events = models.ManyToManyField(Event)
-
-#     def __str__(self):
-#         return self.name
     
 class Category(models.Model):
     name = models.CharField(max_length=100)

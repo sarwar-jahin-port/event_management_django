@@ -1,27 +1,27 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from users.forms import AssignRoleForm, CustomRegistrationForm, LoginForm, CreateGroupForm
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
+from core.views import get_user_roles
+from django.contrib.auth.tokens import default_token_generator
+
 # Create your views here.
 
 def is_admin(user):
-    return user.groups.filter(name='Admin').exists()
+    return user.groups.filter(name='admin').exists()
 
 def sign_up(request):
-    print("rendered sign_up")
     form = CustomRegistrationForm()
     if request.method == "POST":
-        print("clicked sign up button")
         form = CustomRegistrationForm(request.POST)
-        # print(form.cleaned_data)
         if form.is_valid():
             print("form is valid")
             user = form.save(commit=False)
             user.set_password(form.cleaned_data.get('password1'))
-            # user.is_active = False
+            user.is_active = False
             user.save()
             print("user created")
             messages.success(
@@ -30,6 +30,19 @@ def sign_up(request):
         else:
             print("Form is not valid")
     return render(request, 'registration/register.html', {"form": form})
+
+def activate_user(request, user_id, token):
+    try:
+        user = User.objects.get(id = user_id)
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return redirect('sign-in')
+        else:
+            return HttpResponse("Invalid ID or token")
+        
+    except User.DoesNotExist:
+        return HttpResponse("User not found")
 
 def sign_in(request):
     form = LoginForm()
@@ -59,9 +72,11 @@ def admin_dashboard(request):
             user.group_name = user.all_groups[0].name
         else:
             user.group_name = 'No Group Assigned'
-    return render(request, 'admin/dashboard.html', {"users": users})
+    
+    user_roles = get_user_roles(request.user)
+    return render(request, 'admin/dashboard.html', {"users": users, **user_roles})
 
-# @user_passes_test(is_admin, login_url='no-permission')
+@user_passes_test(is_admin, login_url='no-permission')
 def create_group(request):
     form = CreateGroupForm()
     if request.method == "POST":
@@ -73,6 +88,7 @@ def create_group(request):
             return redirect('create-group')
     return render(request, 'admin/create_group.html', {"form": form})
 
+@user_passes_test(is_admin, login_url='no-permission')
 def assign_role(request, user_id):
     user = User.objects.get(id=user_id)
     form = AssignRoleForm()
@@ -84,11 +100,17 @@ def assign_role(request, user_id):
             role = form.cleaned_data.get('role')
             user.groups.clear()
             user.groups.add(role)
+
+            user.user_permissions.clear()
+            for permission in role.permissions.all():
+                user.user_permissions.add(permission)
+            
             messages.success(request, f"User {user.username} has been assigned to the {role.name} role")
             return redirect('admin-dashboard')
         
     return render(request, 'admin/assign_role.html', {"form": form})
 
+@user_passes_test(is_admin, login_url='no-permission')
 def group_list(request):
     groups = Group.objects.prefetch_related('permissions').all()
     return render(request, 'admin/group_list.html', {'groups': groups})
