@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="py-16 px-6">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div>
+            <h1 class="text-4xl font-bold mb-4">Organise your business events</h1>
+            <p class="text-gray-600 mb-6">We help you to organise your business events so that you can focus on delivering best of the expo.</p>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full">Organise your Event</button>
+        </div>
+        <div class="flex justify-center">
+            <img class='max-w-full h-auto' src="{% static "images/capture.PNG" %}" alt="Banner Image"/>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 px-6 bg-gray-50">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-8">Trusted by brands.</h2>
+        <p class="text-gray-600 mb-8">We have helped some organizations to organize their expos.</p>
+        <div class="flex flex-wrap justify-center gap-8">
+            <img src="{% static "images/brands.png" %}" alt="">
+        </div>
+    </div>
+</section>
+
+<section class="py-16 px-6">
+    <div class="container mx-auto">
+        <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-3xl font-semibold mb-4">Our 8 years of achievements</h2>
+                    <p class="text-gray-600 mb-8">With our super powers we have reached this</p>
+                </div>
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="text-center">
+                        <span class="text-4xl font-bold">100+</span>
+                        <p class="text-gray-600">Events organised</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl font-bold">20 Crores</span>
+                        <p class="text-gray-600">People visits</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl font-bold">50+</span>
+                        <p class="text-gray-600">Organization helped</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl font-bold">12</span>
+                        <p class="text-gray-600">Cities</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <img src="{% static "images/model.png" %}" alt="">
+                </div>
+                <div class="w-full md:w-1/2 mx-auto">
+                    <h2 class="text-3xl font-semibold mb-4">Our Story</h2>
+                    <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum diam orci pretium a pharetra, feugiat cursus. Dictumst risus, sem egestas odio cras adipiscing vulputate. Nisi, risus in suscipit non. Non commodo volutpat, pharetra vel.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 px-6 bg-gray-50">
+    <div class="w-full md:w-2/3 mx-auto">
+        <img src="{% static "images/business.png" %}" alt="">
+    </div>
+</section>
+
+<section class="py-16 px-6 bg-gray-50">
+    <div class="container mx-auto">
+        <h2 class="text-2xl font-semibold mb-8">From our blog</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                <img src="{% static "images/blog1.png" %}" alt="">
+                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                <img src="{% static "images/blog2.png" %}" alt="">
+                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                <img src="{% static "images/blog3.png" %}" alt="">
+                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                <img src="{% static "images/blog4.png" %}" alt="">
+                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

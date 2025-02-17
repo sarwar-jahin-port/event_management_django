@@ -15,7 +15,6 @@
                 <li><a href="{% url "organizer_dashboard" %}">Dashboard</a></li>
                 <li><a href="{% url "create-event" %}">Create Event</a></li>
                 <li><a href="{% url "create-category" %}">Create Category</a></li>
-                <li><a href="{% url "create-participant" %}">Create Paricipant</a></li>
             </ul>
         </nav>
         <div class="stats-grid grid grid-cols-4 gap-4 p-4">
@@ -55,7 +54,11 @@
         <div class="events grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
             {% for event in events %}
             <div class="event space-y-3 border p-4 bg-white shadow-md rounded-lg">
-                <img src="{% static "images/event.webp" %}" alt="" class="rounded-lg w-full">
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" alt="{{ event.name }}" class="rounded-lg shadow-md w-full">
+                {% else %}
+                    <img src="{% static "images/event.webp" %}" alt="Default Event Image" class="rounded-lg shadow-md w-full">
+                {% endif %}
                 <h3 class="text-xl font-semibold">{{event.name}}</h3>
                 <div class="flex justify-between text-gray-500">
                     <p>{{event.category.name}}</p>

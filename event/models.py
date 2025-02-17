@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Event(models.Model):
     name = models.CharField(max_length=100)
@@ -7,17 +8,10 @@ class Event(models.Model):
     time = models.TimeField()
     location = models.CharField(max_length=100)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
-    participants = models.ManyToManyField('Participant', blank=True, related_name='participants')
+    participants = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='participants')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
-class Participant(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    events = models.ManyToManyField(Event)
+    image = models.ImageField(upload_to='event_images', blank=True, null=True)
 
     def __str__(self):
         return self.name

@@ -1,0 +1,26 @@
+<header class="py-4 px-6">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="font-bold text-xl">Event Management</div>
+        <nav class="space-x-4 text-sm flex">
+            <a href="#" class="hover:text-gray-600">Home</a>
+            <a href="#" class="hover:text-gray-600">About Us</a>
+            <a href="#" class="hover:text-gray-600">Contact Us</a>
+            <a href="#" class="hover:text-gray-600">Support</a>
+            {% if request.user.is_authenticated %}
+                <form action="{% url "logout" %}" method="POST" class="w-fit">
+                    {% csrf_token %}
+                    <button type="submit" class="hover:text-gray-600">logout</button>
+                </form>
+            {% else %}
+                <form action="{% url "sign-up" %}" method="POST" class="inline w-fit">
+                    {% csrf_token %}
+                    <button type="submit" class="hover:text-gray-600">Sign up</button>
+                </form>
+                <form action="{% url "sign-in" %}" method="POST" class="inline w-fit">
+                    {% csrf_token %}
+                    <button type="submit" class="hover:text-gray-600">Sign in</button>
+                </form>
+            {% endif %}
+        </nav>
+    </div>
+</header>
