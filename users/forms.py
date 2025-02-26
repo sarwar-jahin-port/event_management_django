@@ -1,9 +1,13 @@
 import re
 from django import forms
-from django.contrib.auth.models import User, Permission, Group
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
+from django.contrib.auth.models import Permission, Group
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django import forms
+from users.models import CustomUser
+from django.shortcuts import redirect
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class StyledFormMixin:
     """
@@ -122,3 +126,19 @@ class AssignRoleForm(forms.Form):
         queryset=Group.objects.all(),
         empty_label="Select a Role"
     )
+
+class EditProfileForm(StyledFormMixin, forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'bio', 'profile_image']
+
+class CustomPasswordChangeForm(StyledFormMixin, PasswordChangeForm):
+    pass
+
+
+class CustomPasswordResetForm(StyledFormMixin, PasswordResetForm):
+    pass
+
+
+class CustomPasswordResetConfirmForm(StyledFormMixin, SetPasswordForm):
+    pass

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="bg-gray-100 font-sans p-4">
+    <div class="container mx-auto p-4">
+        <div class="bg-white rounded-t-lg">
+            <div class="my-6 w-full min-h-12 rounded-t-lg bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700"></div>
+
+            <div class="w-full flex justify-between items-center px-8">
+                <div>
+                    <img src="{% if profile_image %}{{ profile_image.url }}{% else %}{% static "images/blog2.png" %}{% endif %}"
+                         alt="Profile Picture" class="rounded-full w-32 h-32 mb-4">
+                    <p class="text-xl font-bold text-gray-800">{{ name }}</p>
+                    <p class="text-gray-600">{{ email }}</p>
+                </div>
+                <a href="{% url 'edit_profile' %}" class="bg-white hover:bg-gray-100 text-indigo-700 font-medium py-2 px-4 rounded border border-gray-300">Edit</a>
+                <a href="{% url 'password_change' %}" class="bg-white hover:bg-gray-100 text-indigo-700 font-medium py-2 px-4 rounded border border-gray-300">Change Password</a>
+            </div>
+
+            <div class="w-full p-8" id="profileDetails">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium">First Name</label>
+                        <p class="mt-1 text-gray-800">{{ first_name }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium">Last Name</label>
+                        <p class="mt-1 text-gray-800">{{ last_name }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium">Email</label>
+                        <p class="mt-1 text-gray-800">{{ email }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium">Group</label>
+                        <p class="mt-1 text-gray-800">{{ group }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium">Joining Date</label>
+                        <p class="mt-1 text-gray-800">{{ member_since|date:'F j, Y' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium">Last logged in</label>
+                        <p class="mt-1 text-gray-800">{{ last_login|date:'F j, Y H:i' }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <label class="block text-gray-700 font-medium">Bio</label>
+                    <p class="mt-1 text-gray-800">{{ bio }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

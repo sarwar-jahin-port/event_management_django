@@ -24,4 +24,3 @@ def get_user_roles(user):
         'is_admin': is_admin,
         'is_participant': is_participant,
     }
-

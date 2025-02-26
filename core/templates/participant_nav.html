@@ -5,7 +5,7 @@
             <a href="#" class="hover:text-gray-600">Home</a>
             <a href="{% url "organizer_dashboard" %}" class="hover:text-gray-600">Events</a>
             <a href="#" class="hover:text-gray-600">About Us</a>
-            <a href="#" class="hover:text-gray-600">Contact Us</a>
+            <a href="{% url "profile" %}" class="hover:text-gray-600">Profile</a>
             <form action="{% url "logout" %}" method="POST" class="w-fit">
                 {% csrf_token %}
                 <button type="submit" class="hover:text-gray-600">logout</button>
