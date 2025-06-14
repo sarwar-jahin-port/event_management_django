@@ -99,12 +99,19 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://event_manager_db_1qef_user:u5chCo9orE3l7YHNcwDy59wGAYKkMHHG@dpg-cuvcor56l47c738qh5mg-a.oregon-postgres.render.com/event_manager_db_1qef',
+#         conn_max_age=600
+#     )
+# }
+
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://event_manager_db_1qef_user:u5chCo9orE3l7YHNcwDy59wGAYKkMHHG@dpg-cuvcor56l47c738qh5mg-a.oregon-postgres.render.com/event_manager_db_1qef',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
+    }
 }
 
 # Password validation
