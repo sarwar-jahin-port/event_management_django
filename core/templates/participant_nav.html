@@ -1,15 +1,81 @@
-<header class="py-4 px-6">
-    <div class="container mx-auto flex justify-between items-center">
-        <div class="font-bold text-xl">Event Management</div>
-        <nav class="space-x-4 text-sm flex">
-            <a href="#" class="hover:text-gray-600">Home</a>
-            <a href="{% url "organizer_dashboard" %}" class="hover:text-gray-600">Events</a>
-            <a href="#" class="hover:text-gray-600">About Us</a>
-            <a href="{% url "profile" %}" class="hover:text-gray-600">Profile</a>
-            <form action="{% url "logout" %}" method="POST" class="w-fit">
-                {% csrf_token %}
-                <button type="submit" class="hover:text-gray-600">logout</button>
-            </form>
-        </nav>
+<header class="bg-white shadow-md border-b border-gray-200 sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-2 rounded-xl">
+                    <i class="fas fa-users text-white text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="font-bold text-xl bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                        EventPro
+                    </div>
+                    <div class="text-xs text-gray-500 font-medium">Participant Portal</div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-green-50">
+                    <i class="fas fa-home text-sm"></i>
+                    <span>Home</span>
+                </a>
+                <a href="{% url "organizer_dashboard" %}" class="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-green-50">
+                    <i class="fas fa-calendar-check text-sm"></i>
+                    <span>My Events</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-green-50">
+                    <i class="fas fa-search text-sm"></i>
+                    <span>Browse Events</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-green-50">
+                    <i class="fas fa-info-circle text-sm"></i>
+                    <span>About Us</span>
+                </a>
+            </nav>
+            
+            <!-- User Menu -->
+            <div class="flex items-center space-x-4">
+                <!-- Quick Actions -->
+                <button class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md">
+                    <i class="fas fa-ticket-alt mr-2"></i>Find Events
+                </button>
+                
+                <!-- Notifications -->
+                <button class="relative text-gray-600 hover:text-green-600 transition-colors duration-200">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span class="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">1</span>
+                </button>
+                
+                <!-- User Profile -->
+                <div class="flex items-center space-x-3">
+                    <div class="text-right hidden sm:block">
+                        <div class="text-sm font-semibold text-gray-900">{{ request.user.first_name|default:request.user.username }}</div>
+                        <div class="text-xs text-gray-500">Event Participant</div>
+                    </div>
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold">
+                        {{ request.user.first_name.0|default:request.user.username.0|upper }}
+                    </div>
+                </div>
+                
+                <!-- Profile & Logout -->
+                <div class="flex items-center space-x-2">
+                    <a href="{% url "profile" %}" class="text-gray-700 hover:text-green-600 font-medium py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-green-50">
+                        <i class="fas fa-user-cog mr-1"></i>Profile
+                    </a>
+                    <form action="{% url "logout" %}" method="POST" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                            <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-gray-700 hover:text-green-600 transition-colors">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </header>

@@ -1,46 +1,268 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block title %}Admin Dashboard - EventPro{% endblock %}
+
 {% block content %}
-    <div class="container mx-auto mt-8">
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">User List</h2>
-
-            <div class="mb-4">
-                <input type="text" placeholder="Search users..." class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="min-w-full table-auto border-collapse border border-gray-200">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="border border-gray-200 px-4 py-2">ID</th>
-                            <th class="border border-gray-200 px-4 py-2">Username</th>
-                            <th class="border border-gray-200 px-4 py-2">Email</th>
-                            <th class="border border-gray-200 px-4 py-2">First Name</th>
-                            <th class="border border-gray-200 px-4 py-2">Last Name</th>
-                            <th class="border border-gray-200 px-4 py-2">Role</th>
-                            <th class="border border-gray-200 px-4 py-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      {% for user in users %}
-                        <tr>
-                            <td class="border border-gray-200 px-4 py-2">{{forloop.counter}}</td>
-                            <td class="border border-gray-200 px-4 py-2">{{user.username}}</td>
-                            <td class="border border-gray-200 px-4 py-2">{{user.email}}</td>
-                            <td class="border border-gray-200 px-4 py-2">{{user.first_name}}</td>
-                            <td class="border border-gray-200 px-4 py-2">{{user.last_name}}</td>
-                            <td class="border border-gray-200 px-4 py-2">{{user.group_name}}</td>
-                            <td class="border border-gray-200 px-4 py-2">
-                                <form action="{% url "assign-role" user.id %}">
-                                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline text-sm ml-1">Change Role</button>
-                                </form>
-                            </td>
-                        </tr>
-                      {% endfor %}
-                        </tbody>
-                </table>
+<div class="min-h-screen bg-gray-50">
+    <!-- Header Section -->
+    <div class="bg-gradient-to-r from-red-600 to-pink-700 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">Admin Dashboard</h1>
+                    <p class="text-red-100 text-lg">Manage users, roles, and system settings</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 mt-6 md:mt-0">
+                    <a href="{% url 'create-group' %}" 
+                       class="bg-white text-red-600 hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center">
+                        <i class="fas fa-plus mr-2"></i>Create Group
+                    </a>
+                    <a href="#" 
+                       class="border-2 border-white text-white hover:bg-white hover:text-red-600 font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center">
+                        <i class="fas fa-cog mr-2"></i>Settings
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-    {% endblock content %}
+
+    <!-- Stats Overview -->
+    <div class="container mx-auto px-6 -mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Total Users -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Users</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-2">{{ users|length }}</p>
+                        <p class="text-green-600 text-sm mt-1 flex items-center">
+                            <i class="fas fa-arrow-up mr-1"></i>+5% from last month
+                        </p>
+                    </div>
+                    <div class="bg-blue-100 p-4 rounded-xl">
+                        <i class="fas fa-users text-blue-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Sessions -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium uppercase tracking-wide">Active Sessions</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-2">24</p>
+                        <p class="text-blue-600 text-sm mt-1 flex items-center">
+                            <i class="fas fa-clock mr-1"></i>Real-time
+                        </p>
+                    </div>
+                    <div class="bg-green-100 p-4 rounded-xl">
+                        <i class="fas fa-wifi text-green-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium uppercase tracking-wide">System Health</p>
+                        <p class="text-3xl font-bold text-green-600 mt-2">Excellent</p>
+                        <p class="text-gray-600 text-sm mt-1 flex items-center">
+                            <i class="fas fa-check-circle mr-1"></i>All systems operational
+                        </p>
+                    </div>
+                    <div class="bg-purple-100 p-4 rounded-xl">
+                        <i class="fas fa-server text-purple-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-6 pb-12">
+        <!-- User Management Section -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 flex items-center">
+                            <i class="fas fa-users-cog text-red-500 mr-3"></i>
+                            User Management
+                        </h2>
+                        <p class="text-gray-600 mt-1">Manage user accounts, roles, and permissions</p>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                        <div class="relative">
+                            <input type="text" placeholder="Search users..." 
+                                   class="w-full lg:w-80 pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <button class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-filter mr-2"></i>Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center space-x-2">
+                                    <span>User</span>
+                                    <i class="fas fa-sort text-gray-400"></i>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center space-x-2">
+                                    <span>Contact</span>
+                                    <i class="fas fa-sort text-gray-400"></i>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <div class="flex items-center space-x-2">
+                                    <span>Role</span>
+                                    <i class="fas fa-sort text-gray-400"></i>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for user in users %}
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-r from-red-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                                        {{ user.first_name.0|default:user.username.0|upper }}
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-semibold text-gray-900">
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">@{{ user.username }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ user.email }}</div>
+                                <div class="text-sm text-gray-500">ID: {{ forloop.counter }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+                                    {% if user.group_name == 'Admin' %}bg-red-100 text-red-800
+                                    {% elif user.group_name == 'Organizer' %}bg-blue-100 text-blue-800
+                                    {% elif user.group_name == 'Participant' %}bg-green-100 text-green-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {% if user.group_name == 'Admin' %}
+                                        <i class="fas fa-crown mr-1"></i>
+                                    {% elif user.group_name == 'Organizer' %}
+                                        <i class="fas fa-calendar-alt mr-1"></i>
+                                    {% elif user.group_name == 'Participant' %}
+                                        <i class="fas fa-users mr-1"></i>
+                                    {% else %}
+                                        <i class="fas fa-user mr-1"></i>
+                                    {% endif %}
+                                    {{ user.group_name|default:"No Role" }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle mr-1 text-xs"></i>Active
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition-colors duration-200">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="#" class="text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 p-2 rounded-lg transition-colors duration-200">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{% url "assign-role" user.id %}" class="inline">
+                                        <button type="submit" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors duration-200">
+                                            <i class="fas fa-user-cog"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Footer -->
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                <div class="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
+                    <div class="text-sm text-gray-600">
+                        Showing {{ users|length }} users
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            <i class="fas fa-chevron-left mr-1"></i>Previous
+                        </button>
+                        <button class="px-3 py-2 text-sm text-white bg-red-500 rounded-lg">1</button>
+                        <button class="px-3 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">2</button>
+                        <button class="px-3 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">3</button>
+                        <button class="px-3 py-2 text-sm text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            Next<i class="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a href="{% url 'create-group' %}" class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-users-cog text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Create Group</h3>
+                        <p class="text-gray-600 text-sm">Add new user groups</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-bar text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">View Reports</h3>
+                        <p class="text-gray-600 text-sm">System analytics</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-cog text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">System Settings</h3>
+                        <p class="text-gray-600 text-sm">Configure system</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

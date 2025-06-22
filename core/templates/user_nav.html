@@ -1,26 +1,68 @@
-<header class="py-4 px-6">
-    <div class="container mx-auto flex justify-between items-center">
-        <div class="font-bold text-xl">Event Management</div>
-        <nav class="space-x-4 text-sm flex">
-            <a href="#" class="hover:text-gray-600">Home</a>
-            <a href="#" class="hover:text-gray-600">About Us</a>
-            <a href="#" class="hover:text-gray-600">Contact Us</a>
-            <a href="{% url "profile" %}" class="hover:text-gray-600">Profile</a>
-            {% if request.user.is_authenticated %}
-                <form action="{% url "logout" %}" method="POST" class="w-fit">
-                    {% csrf_token %}
-                    <button type="submit" class="hover:text-gray-600">logout</button>
-                </form>
-            {% else %}
-                <form action="{% url "sign-up" %}" method="POST" class="inline w-fit">
-                    {% csrf_token %}
-                    <button type="submit" class="hover:text-gray-600">Sign up</button>
-                </form>
-                <form action="{% url "sign-in" %}" method="POST" class="inline w-fit">
-                    {% csrf_token %}
-                    <button type="submit" class="hover:text-gray-600">Sign in</button>
-                </form>
-            {% endif %}
-        </nav>
+<header class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-r from-primary-500 to-purple-600 p-2 rounded-xl">
+                    <i class="fas fa-calendar-alt text-white text-xl"></i>
+                </div>
+                <div class="font-bold text-2xl bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
+                    EventPro
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200 relative group">
+                    Home
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#" class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200 relative group">
+                    About Us
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#" class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200 relative group">
+                    Services
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#" class="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200 relative group">
+                    Contact
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </nav>
+            
+            <!-- Auth Buttons -->
+            <div class="flex items-center space-x-4">
+                {% if request.user.is_authenticated %}
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-700 font-medium">Welcome, {{ request.user.first_name|default:request.user.username }}!</span>
+                        <form action="{% url "logout" %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-lg transition-colors duration-200">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <form action="{% url "sign-in" %}" method="POST" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-gray-700 hover:text-primary-600 font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                            Sign In
+                        </button>
+                    </form>
+                    <form action="{% url "sign-up" %}" method="POST" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md">
+                            <i class="fas fa-user-plus mr-2"></i>Get Started
+                        </button>
+                    </form>
+                {% endif %}
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-gray-700 hover:text-primary-600 transition-colors">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </header>

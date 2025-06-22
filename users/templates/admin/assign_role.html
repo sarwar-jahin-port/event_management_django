@@ -1,26 +1,237 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assign Role</title>
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-</head>
-<body class="bg-gray-100 font-sans">
 
-    <div class="container mx-auto mt-8 p-6 bg-white shadow-md rounded-lg">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Assign Role to User</h2>
+{% block title %}Assign Role - EventPro{% endblock %}
 
-        <form action="#" method="post" class="space-y-4">
-            {% csrf_token %}    
-            {{form}}
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Assign Role
-            </button>
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12">
+    <div class="container mx-auto px-6">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-4">
+                <i class="fas fa-user-cog text-white text-2xl"></i>
             </div>
-        </form>
-    </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Assign User Role</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Modify user permissions by assigning them to different groups with specific access levels.
+            </p>
+        </div>
 
-</body>
-</html>
+        <!-- Form Container -->
+        <div class="max-w-2xl mx-auto">
+            <!-- Form -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6">
+                    <h2 class="text-2xl font-bold text-white flex items-center">
+                        <i class="fas fa-shield-alt mr-3"></i>
+                        Role Assignment
+                    </h2>
+                    <p class="text-blue-100 mt-2">Select the appropriate role for this user</p>
+                </div>
+                
+                <form action="#" method="post" class="p-8">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-6">
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="text-red-500">*</span>
+                                    {% endif %}
+                                </label>
+                                
+                                {% if field.name == 'groups' or 'group' in field.name %}
+                                    <!-- Role Selection with Visual Cards -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {% for choice in field.field.queryset %}
+                                            <label class="relative">
+                                                <input type="radio" name="{{ field.name }}" value="{{ choice.pk }}" 
+                                                       {% if choice.pk == field.value %}checked{% endif %}
+                                                       class="sr-only peer">
+                                                <div class="bg-white border-2 border-gray-200 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:border-blue-300 peer-checked:border-blue-500 peer-checked:bg-blue-50">
+                                                    <!-- Role Icon and Name -->
+                                                    <div class="flex items-center mb-4">
+                                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 
+                                                            {% if choice.name == 'Admin' or 'admin' in choice.name|lower %}bg-red-100 text-red-600
+                                                            {% elif choice.name == 'Organizer' or 'organizer' in choice.name|lower %}bg-blue-100 text-blue-600
+                                                            {% elif choice.name == 'Participant' or 'participant' in choice.name|lower %}bg-green-100 text-green-600
+                                                            {% else %}bg-purple-100 text-purple-600{% endif %}">
+                                                            {% if choice.name == 'Admin' or 'admin' in choice.name|lower %}
+                                                                <i class="fas fa-crown text-xl"></i>
+                                                            {% elif choice.name == 'Organizer' or 'organizer' in choice.name|lower %}
+                                                                <i class="fas fa-calendar-alt text-xl"></i>
+                                                            {% elif choice.name == 'Participant' or 'participant' in choice.name|lower %}
+                                                                <i class="fas fa-users text-xl"></i>
+                                                            {% else %}
+                                                                <i class="fas fa-user-cog text-xl"></i>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div>
+                                                            <h3 class="text-lg font-bold text-gray-900">{{ choice.name }}</h3>
+                                                            <p class="text-sm text-gray-500">{{ choice.permissions.count }} permission{{ choice.permissions.count|pluralize }}</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Role Description -->
+                                                    <div class="space-y-2">
+                                                        {% if choice.name == 'Admin' or 'admin' in choice.name|lower %}
+                                                            <p class="text-sm text-gray-600">Full system access with administrative privileges</p>
+                                                            <div class="flex flex-wrap gap-1">
+                                                                <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Manage Users</span>
+                                                                <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">System Settings</span>
+                                                            </div>
+                                                        {% elif choice.name == 'Organizer' or 'organizer' in choice.name|lower %}
+                                                            <p class="text-sm text-gray-600">Can create and manage events and categories</p>
+                                                            <div class="flex flex-wrap gap-1">
+                                                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Create Events</span>
+                                                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Manage Events</span>
+                                                            </div>
+                                                        {% elif choice.name == 'Participant' or 'participant' in choice.name|lower %}
+                                                            <p class="text-sm text-gray-600">Can browse and join events</p>
+                                                            <div class="flex flex-wrap gap-1">
+                                                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">View Events</span>
+                                                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Join Events</span>
+                                                            </div>
+                                                        {% else %}
+                                                            <p class="text-sm text-gray-600">Custom role with specific permissions</p>
+                                                            <div class="text-xs text-gray-500">{{ choice.permissions.count }} custom permissions</div>
+                                                        {% endif %}
+                                                    </div>
+                                                    
+                                                    <!-- Selected Indicator -->
+                                                    <div class="absolute top-4 right-4 w-6 h-6 border-2 border-gray-300 rounded-full peer-checked:border-blue-500 peer-checked:bg-blue-500 transition-colors duration-200">
+                                                        <div class="w-2 h-2 bg-white rounded-full m-1 opacity-0 peer-checked:opacity-100 transition-opacity duration-200"></div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                {% elif field.name == 'user' %}
+                                    <!-- User Selection -->
+                                    <div class="relative">
+                                        <select name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none">
+                                            {% for choice in field.field.queryset %}
+                                                <option value="{{ choice.pk }}" {% if choice.pk == field.value %}selected{% endif %}>
+                                                    {{ choice.first_name }} {{ choice.last_name }} (@{{ choice.username }})
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    </div>
+                                {% else %}
+                                    <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                                           name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                           value="{{ field.value|default:'' }}"
+                                           placeholder="Enter {{ field.label|lower }}"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                                {% endif %}
+                                
+                                {% if field.errors %}
+                                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                                        <i class="fas fa-exclamation-circle mr-1"></i>
+                                        {{ field.errors.0 }}
+                                    </p>
+                                {% endif %}
+
+                                {% if field.name == 'user' %}
+                                    <p class="mt-1 text-sm text-gray-500">
+                                        Select the user whose role you want to change
+                                    </p>
+                                {% elif 'group' in field.name %}
+                                    <p class="mt-1 text-sm text-gray-500">
+                                        Choose the role that best fits the user's responsibilities
+                                    </p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Role Comparison Table -->
+                    <div class="mt-8 bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-balance-scale text-blue-500 mr-2"></i>
+                            Role Comparison
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left py-2">Permission</th>
+                                        <th class="text-center py-2 text-red-600">Admin</th>
+                                        <th class="text-center py-2 text-blue-600">Organizer</th>
+                                        <th class="text-center py-2 text-green-600">Participant</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="py-2 text-gray-700">Manage Users</td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-times text-red-400"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-times text-red-400"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-gray-700">Create Events</td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-times text-red-400"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-gray-700">Join Events</td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-gray-700">View Reports</td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-check text-green-500"></i></td>
+                                        <td class="text-center py-2"><i class="fas fa-times text-red-400"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
+                        <a href="{% url 'admin-dashboard' %}" 
+                           class="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-times mr-2"></i>Cancel
+                        </a>
+                        <button type="submit" 
+                                class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-user-cog mr-2"></i>Assign Role
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                    <i class="fas fa-shield-alt text-orange-500 mr-2"></i>
+                    Security Notice
+                </h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mr-2 mt-1 text-xs"></i>
+                        <span>Role changes take effect immediately</span>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mr-2 mt-1 text-xs"></i>
+                        <span>Users will retain access to content they created</span>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mr-2 mt-1 text-xs"></i>
+                        <span>Admin roles should be assigned carefully</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

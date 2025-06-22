@@ -1,94 +1,300 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block title %}EventPro - Professional Event Management Solutions{% endblock %}
+
 {% block content %}
-<section class="py-16 px-6">
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div>
-            <h1 class="text-4xl font-bold mb-4">Organise your business events</h1>
-            <p class="text-gray-600 mb-6">We help you to organise your business events so that you can focus on delivering best of the expo.</p>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full">Organise your Event</button>
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-gray-800 via-primary-700 to-gray-900 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-black opacity-10"></div>
+    <div class="absolute inset-0">
+        <div class="absolute top-10 left-10 w-72 h-72 bg-white opacity-5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-300 opacity-10 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="relative container mx-auto px-6 py-20 lg:py-32">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div class="space-y-4">
+                    <h1 class="text-4xl lg:text-6xl font-bold leading-tight">
+                        Organize Your 
+                        <span class="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                            Business Events
+                        </span>
+                        Professionally
+                    </h1>
+                    <p class="text-xl text-blue-100 leading-relaxed max-w-2xl">
+                        We help you create memorable experiences and successful business events so you can focus on delivering exceptional value to your audience.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-calendar-plus mr-2"></i>
+                        Start Planning Your Event
+                    </button>
+                    <button class="border-2 border-white text-white hover:bg-white hover:text-primary-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300">
+                        <i class="fas fa-play mr-2"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                
+                <div class="flex items-center space-x-8 pt-8">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">100+</div>
+                        <div class="text-blue-200 text-sm">Events Organized</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">50+</div>
+                        <div class="text-blue-200 text-sm">Happy Clients</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">8+</div>
+                        <div class="text-blue-200 text-sm">Years Experience</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto lg:mx-0">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary-400 to-purple-600 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
+                <div class="relative bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl">
+                    <img class='w-full h-auto rounded-xl sm:rounded-2xl' src="{% static "images/hero.svg" %}" alt="Event Management Dashboard"/>
+                </div>
+            </div>
         </div>
+    </div>
+</section>
+
+<!-- Trusted Brands Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Trusted by Industry Leaders</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                We've partnered with leading organizations to deliver outstanding events that drive results and create lasting impressions.
+            </p>
+        </div>
+        
         <div class="flex justify-center">
-            <img class='max-w-full h-auto' src="{% static "images/capture.PNG" %}" alt="Banner Image"/>
-        </div>
-    </div>
-</section>
-
-<section class="py-16 px-6 bg-gray-50">
-    <div class="container mx-auto text-center">
-        <h2 class="text-3xl font-semibold mb-8">Trusted by brands.</h2>
-        <p class="text-gray-600 mb-8">We have helped some organizations to organize their expos.</p>
-        <div class="flex flex-wrap justify-center gap-8">
-            <img src="{% static "images/brands.png" %}" alt="">
-        </div>
-    </div>
-</section>
-
-<section class="py-16 px-6">
-    <div class="container mx-auto">
-        <div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <h2 class="text-3xl font-semibold mb-4">Our 8 years of achievements</h2>
-                    <p class="text-gray-600 mb-8">With our super powers we have reached this</p>
-                </div>
-                <div class="grid grid-cols-2 gap-8">
-                    <div class="text-center">
-                        <span class="text-4xl font-bold">100+</span>
-                        <p class="text-gray-600">Events organised</p>
-                    </div>
-                    <div class="text-center">
-                        <span class="text-4xl font-bold">20 Crores</span>
-                        <p class="text-gray-600">People visits</p>
-                    </div>
-                    <div class="text-center">
-                        <span class="text-4xl font-bold">50+</span>
-                        <p class="text-gray-600">Organization helped</p>
-                    </div>
-                    <div class="text-center">
-                        <span class="text-4xl font-bold">12</span>
-                        <p class="text-gray-600">Cities</p>
-                    </div>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <img src="{% static "images/model.png" %}" alt="">
-                </div>
-                <div class="w-full md:w-1/2 mx-auto">
-                    <h2 class="text-3xl font-semibold mb-4">Our Story</h2>
-                    <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum diam orci pretium a pharetra, feugiat cursus. Dictumst risus, sem egestas odio cras adipiscing vulputate. Nisi, risus in suscipit non. Non commodo volutpat, pharetra vel.</p>
-                </div>
+            <div class="bg-gray-50 rounded-2xl p-8 max-w-4xl">
+                <img src="{% static "images/brands.png" %}" alt="Trusted Brand Partners" class="w-full h-auto opacity-70 hover:opacity-100 transition-opacity duration-300">
             </div>
         </div>
     </div>
 </section>
 
-<section class="py-16 px-6 bg-gray-50">
-    <div class="w-full md:w-2/3 mx-auto">
-        <img src="{% static "images/business.png" %}" alt="">
+<!-- Achievements Section -->
+<section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-6">
+                <div class="space-y-4">
+                    <h2 class="text-4xl font-bold text-gray-900">8 Years of Excellence</h2>
+                    <p class="text-xl text-gray-600 leading-relaxed">
+                        Through dedication, innovation, and exceptional service, we've built a legacy of successful events and satisfied clients.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-center space-y-2">
+                            <div class="text-4xl font-bold text-primary-600">100+</div>
+                            <div class="text-gray-600 font-medium">Events Organized</div>
+                            <div class="w-12 h-1 bg-gradient-to-r from-primary-500 to-blue-500 mx-auto rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-center space-y-2">
+                            <div class="text-4xl font-bold text-green-600">2M+</div>
+                            <div class="text-gray-600 font-medium">Attendees Reached</div>
+                            <div class="w-12 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-center space-y-2">
+                            <div class="text-4xl font-bold text-purple-600">50+</div>
+                            <div class="text-gray-600 font-medium">Organizations Helped</div>
+                            <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-center space-y-2">
+                            <div class="text-4xl font-bold text-orange-600">12</div>
+                            <div class="text-gray-600 font-medium">Cities Covered</div>
+                            <div class="w-12 h-1 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary-200 to-purple-200 rounded-3xl transform rotate-6"></div>
+                <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
+                    <img src="{% static "images/model.png" %}" alt="Our Story" class="w-full h-auto rounded-2xl">
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="py-16 px-6 bg-gray-50">
-    <div class="container mx-auto">
-        <h2 class="text-2xl font-semibold mb-8">From our blog</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
-                <img src="{% static "images/blog1.png" %}" alt="">
-                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<!-- Our Story Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="relative order-2 lg:order-1">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl transform -rotate-6"></div>
+                <div class="relative bg-white rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="{% static "images/model.png" %}" alt="Our Story" class="w-full h-auto">
+                </div>
             </div>
-            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
-                <img src="{% static "images/blog2.png" %}" alt="">
-                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            
+            <div class="space-y-6 order-1 lg:order-2">
+                <div class="space-y-4">
+                    <h2 class="text-4xl font-bold text-gray-900">Our Story</h2>
+                    <div class="w-20 h-1 bg-gradient-to-r from-primary-500 to-purple-600 rounded-full"></div>
+                </div>
+                
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    Founded with a vision to revolutionize event management, we've grown from a small team of passionate event planners to a leading force in the industry. Our journey has been marked by countless successful events, satisfied clients, and innovative solutions.
+                </p>
+                
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    We believe that every event tells a story, and we're here to help you tell yours in the most compelling way possible. From intimate corporate gatherings to large-scale conferences, we bring creativity, precision, and excellence to every project.
+                </p>
+                
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <div class="flex items-center space-x-2 bg-blue-50 px-4 py-2 rounded-full">
+                        <i class="fas fa-check text-primary-500"></i>
+                        <span class="text-gray-700 font-medium">Professional Team</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-green-50 px-4 py-2 rounded-full">
+                        <i class="fas fa-check text-green-500"></i>
+                        <span class="text-gray-700 font-medium">24/7 Support</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-purple-50 px-4 py-2 rounded-full">
+                        <i class="fas fa-check text-purple-500"></i>
+                        <span class="text-gray-700 font-medium">Innovative Solutions</span>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
-                <img src="{% static "images/blog3.png" %}" alt="">
-                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
-                <img src="{% static "images/blog4.png" %}" alt="">
-                <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Services Preview -->
+<section class="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Why Choose EventPro?</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                We offer comprehensive event management solutions designed to make your events successful and memorable.
+            </p>
+        </div>
+        
+        <div class="w-full max-w-6xl mx-auto">
+            <img src="{% static "images/business.png" %}" alt="Event Management Solutions" class="w-full h-auto rounded-3xl shadow-2xl">
+        </div>
+    </div>
+</section>
+
+<!-- Blog Section -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Latest Insights</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Stay updated with the latest trends, tips, and success stories from the world of event management.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="{% static "images/blog1.png" %}" alt="Blog Post" class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110">
+                    <div class="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        Tips
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">Event Planning Best Practices</h3>
+                    <p class="text-gray-600 mb-4">Essential strategies for organizing successful corporate events that leave lasting impressions.</p>
+                    <a href="#" class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                        Read More <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </article>
+            
+            <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="{% static "images/blog2.png" %}" alt="Blog Post" class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110">
+                    <div class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        Success Story
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">Tech Conference Success</h3>
+                    <p class="text-gray-600 mb-4">How we helped organize a 1000+ attendee technology conference with seamless execution.</p>
+                    <a href="#" class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                        Read More <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </article>
+            
+            <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="{% static "images/blog3.png" %}" alt="Blog Post" class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110">
+                    <div class="absolute top-4 left-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        Trends
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">2025 Event Trends</h3>
+                    <p class="text-gray-600 mb-4">Discover the latest trends shaping the future of corporate events and business gatherings.</p>
+                    <a href="#" class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                        Read More <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </article>
+            
+            <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative overflow-hidden">
+                    <img src="{% static "images/blog4.png" %}" alt="Blog Post" class="w-full h-48 object-cover transition-transform duration-300 hover:scale-110">
+                    <div class="absolute top-4 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        Guide
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">Venue Selection Guide</h3>
+                    <p class="text-gray-600 mb-4">Complete guide to choosing the perfect venue for your next corporate event or conference.</p>
+                    <a href="#" class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                        Read More <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-gradient-to-r from-primary-600 to-purple-600 text-white">
+    <div class="container mx-auto px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold mb-6">Ready to Create Your Next Successful Event?</h2>
+            <p class="text-xl mb-8 text-blue-100">
+                Join hundreds of satisfied clients who trust us with their most important business events.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Get Started Today
+                </button>
+                <button class="border-2 border-white text-white hover:bg-white hover:text-primary-600 font-semibold py-4 px-8 rounded-xl transition-all duration-300">
+                    <i class="fas fa-phone mr-2"></i>
+                    Schedule Consultation
+                </button>
             </div>
         </div>
     </div>

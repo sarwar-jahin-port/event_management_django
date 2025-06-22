@@ -1,56 +1,210 @@
 {% extends "base.html" %}
 {% load static %}
-{% block content %}
-<section class="bg-gray-100 font-sans p-4">
-    <div class="container mx-auto p-4">
-        <div class="bg-white rounded-t-lg">
-            <div class="my-6 w-full min-h-12 rounded-t-lg bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700"></div>
 
-            <div class="w-full flex justify-between items-center px-8">
-                <div>
-                    <img src="{% if profile_image %}{{ profile_image.url }}{% else %}{% static "images/blog2.png" %}{% endif %}"
-                         alt="Profile Picture" class="rounded-full w-32 h-32 mb-4">
-                    <p class="text-xl font-bold text-gray-800">{{ name }}</p>
-                    <p class="text-gray-600">{{ email }}</p>
+{% block title %}My Profile - EventPro{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Cover Photo Section -->
+    <div class="relative h-64 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="absolute inset-0">
+            <div class="absolute top-10 left-10 w-72 h-72 bg-white opacity-10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-300 opacity-20 rounded-full blur-3xl"></div>
+        </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="container mx-auto px-6 -mt-32 relative z-10">
+        <!-- Profile Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Profile Header -->
+            <div class="px-8 py-6">
+                <div class="flex flex-col lg:flex-row items-start lg:items-end space-y-6 lg:space-y-0 lg:space-x-8">
+                    <!-- Profile Picture -->
+                    <div class="relative">
+                        <div class="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100">
+                            {% if profile_image %}
+                                <img src="{{ profile_image.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+                            {% else %}
+                                <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                    <span class="text-white text-4xl lg:text-5xl font-bold">{{ name.0|upper }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Online Status -->
+                        <div class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 border-2 border-white rounded-full"></div>
+                    </div>
+                    
+                    <!-- Profile Info -->
+                    <div class="flex-1">
+                        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between">
+                            <div>
+                                <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{{ name }}</h1>
+                                <p class="text-lg text-gray-600 mb-1">{{ email }}</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user-tag mr-2 text-blue-500"></i>
+                                        <span class="font-medium">{{ group }}</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-calendar-alt mr-2 text-green-500"></i>
+                                        <span>Joined {{ member_since|date:'M Y' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="flex space-x-3 mt-4 lg:mt-0">
+                                <a href="{% url 'edit_profile' %}" 
+                                   class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 flex items-center">
+                                    <i class="fas fa-edit mr-2"></i>Edit Profile
+                                </a>
+                                <a href="{% url 'password_change' %}" 
+                                   class="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-key mr-2"></i>Change Password
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a href="{% url 'edit_profile' %}" class="bg-white hover:bg-gray-100 text-indigo-700 font-medium py-2 px-4 rounded border border-gray-300">Edit</a>
-                <a href="{% url 'password_change' %}" class="bg-white hover:bg-gray-100 text-indigo-700 font-medium py-2 px-4 rounded border border-gray-300">Change Password</a>
             </div>
 
-            <div class="w-full p-8" id="profileDetails">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-gray-700 font-medium">First Name</label>
-                        <p class="mt-1 text-gray-800">{{ first_name }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium">Last Name</label>
-                        <p class="mt-1 text-gray-800">{{ last_name }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium">Email</label>
-                        <p class="mt-1 text-gray-800">{{ email }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium">Group</label>
-                        <p class="mt-1 text-gray-800">{{ group }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium">Joining Date</label>
-                        <p class="mt-1 text-gray-800">{{ member_since|date:'F j, Y' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium">Last logged in</label>
-                        <p class="mt-1 text-gray-800">{{ last_login|date:'F j, Y H:i' }}</p>
-                    </div>
-                </div>
+            <!-- Profile Details -->
+            <div class="border-t border-gray-200">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
+                    <!-- Personal Information -->
+                    <div class="lg:col-span-2">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <i class="fas fa-user text-blue-500 mr-3"></i>
+                            Personal Information
+                        </h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-semibold text-gray-600 mb-1">First Name</label>
+                                <p class="text-lg text-gray-900 font-medium">{{ first_name|default:"Not provided" }}</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-semibold text-gray-600 mb-1">Last Name</label>
+                                <p class="text-lg text-gray-900 font-medium">{{ last_name|default:"Not provided" }}</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-semibold text-gray-600 mb-1">Email Address</label>
+                                <p class="text-lg text-gray-900 font-medium flex items-center">
+                                    <i class="fas fa-envelope text-blue-500 mr-2"></i>
+                                    {{ email }}
+                                </p>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-semibold text-gray-600 mb-1">User Role</label>
+                                <p class="text-lg text-gray-900 font-medium flex items-center">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {% if group == 'Admin' %}bg-red-100 text-red-800{% elif group == 'Organizer' %}bg-blue-100 text-blue-800{% elif group == 'Participant' %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                        {% if group == 'Admin' %}
+                                            <i class="fas fa-crown mr-1"></i>
+                                        {% elif group == 'Organizer' %}
+                                            <i class="fas fa-calendar-alt mr-1"></i>
+                                        {% elif group == 'Participant' %}
+                                            <i class="fas fa-users mr-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-user mr-1"></i>
+                                        {% endif %}
+                                        {{ group }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
 
-                <div class="mt-8">
-                    <label class="block text-gray-700 font-medium">Bio</label>
-                    <p class="mt-1 text-gray-800">{{ bio }}</p>
+                        <!-- Bio Section -->
+                        {% if bio %}
+                        <div class="mt-8">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                                <i class="fas fa-quote-left text-purple-500 mr-3"></i>
+                                About Me
+                            </h3>
+                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
+                                <p class="text-gray-700 leading-relaxed">{{ bio }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Activity & Stats -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <i class="fas fa-chart-line text-green-500 mr-3"></i>
+                            Activity
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <!-- Member Since -->
+                            <div class="bg-white border-2 border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-600">Member Since</p>
+                                        <p class="text-lg font-bold text-gray-900">{{ member_since|date:'F j, Y' }}</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-calendar-check text-blue-600"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Last Login -->
+                            <div class="bg-white border-2 border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-600">Last Active</p>
+                                        <p class="text-lg font-bold text-gray-900">{{ last_login|date:'M j, H:i' }}</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-clock text-green-600"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Account Status -->
+                            <div class="bg-white border-2 border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-600">Account Status</p>
+                                        <p class="text-lg font-bold text-green-600">Active</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-green-600"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="mt-8">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+                            <div class="space-y-3">
+                                <a href="{% url 'organizer_dashboard' %}" 
+                                   class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                    <i class="fas fa-calendar-alt text-blue-500 mr-3"></i>
+                                    <span class="font-medium text-gray-700">My Events</span>
+                                </a>
+                                <a href="#" 
+                                   class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                    <i class="fas fa-cog text-gray-500 mr-3"></i>
+                                    <span class="font-medium text-gray-700">Settings</span>
+                                </a>
+                                <a href="#" 
+                                   class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                    <i class="fas fa-question-circle text-purple-500 mr-3"></i>
+                                    <span class="font-medium text-gray-700">Help Center</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock content %}

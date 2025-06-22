@@ -1,22 +1,189 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-</head>
-<body class="w-1/2 mx-auto">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="px-2 py-1 {% if message.tags == 'success' %}bg-green-500{% endif %} ">{{message}}</div>
-        {% endfor %}
-    {% endif %}
-    <form action="{% url "create-group" %}" method="POST">
-        {% csrf_token %}
-        {{form}}
-        <button class="bg-green-400 p-2 rounded" type="submit">Create Group</button>
-    </form>
-</body>
-</html>
+
+{% block title %}Create Group - EventPro{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 py-12">
+    <div class="container mx-auto px-6">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl mb-4">
+                <i class="fas fa-users-cog text-white text-2xl"></i>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Create New Group</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Set up a new user group with specific permissions and access levels.
+            </p>
+        </div>
+
+        <!-- Form Container -->
+        <div class="max-w-2xl mx-auto">
+            <!-- Success Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-8">
+                        <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <p class="text-green-700 font-medium">{{ message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Form -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-6">
+                    <h2 class="text-2xl font-bold text-white flex items-center">
+                        <i class="fas fa-shield-alt mr-3"></i>
+                        Group Configuration
+                    </h2>
+                    <p class="text-indigo-100 mt-2">Define group name and permissions</p>
+                </div>
+                
+                <form action="{% url "create-group" %}" method="POST" class="p-8">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-6">
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="text-red-500">*</span>
+                                    {% endif %}
+                                </label>
+                                
+                                {% if field.name == 'name' %}
+                                    <div class="relative">
+                                        <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                               value="{{ field.value|default:'' }}"
+                                               placeholder="e.g., Event Moderators, Content Reviewers"
+                                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                                        <i class="fas fa-users absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    </div>
+                                {% elif field.name == 'permissions' %}
+                                    <div class="border border-gray-300 rounded-lg p-4 max-h-60 overflow-y-auto">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            {% for choice in field.field.queryset %}
+                                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                                    <input type="checkbox" name="{{ field.name }}" value="{{ choice.pk }}" 
+                                                           class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3">
+                                                    <div>
+                                                        <div class="font-medium text-gray-900">{{ choice.name }}</div>
+                                                        <div class="text-sm text-gray-500">{{ choice.codename }}</div>
+                                                    </div>
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                                           name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                           value="{{ field.value|default:'' }}"
+                                           placeholder="Enter {{ field.label|lower }}"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                                {% endif %}
+                                
+                                {% if field.errors %}
+                                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                                        <i class="fas fa-exclamation-circle mr-1"></i>
+                                        {{ field.errors.0 }}
+                                    </p>
+                                {% endif %}
+
+                                {% if field.name == 'name' %}
+                                    <p class="mt-1 text-sm text-gray-500">
+                                        Choose a descriptive name that clearly identifies the group's purpose
+                                    </p>
+                                {% elif field.name == 'permissions' %}
+                                    <p class="mt-1 text-sm text-gray-500">
+                                        Select the permissions this group should have. Users in this group will inherit these permissions.
+                                    </p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Permission Categories Info -->
+                    <div class="mt-8 bg-indigo-50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-indigo-900 mb-3 flex items-center">
+                            <i class="fas fa-info-circle text-indigo-600 mr-2"></i>
+                            Permission Categories
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-start">
+                                <i class="fas fa-check text-indigo-600 mr-2 mt-1 text-xs"></i>
+                                <div>
+                                    <span class="font-medium text-indigo-800">View:</span>
+                                    <span class="text-indigo-700"> Read-only access to content</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check text-indigo-600 mr-2 mt-1 text-xs"></i>
+                                <div>
+                                    <span class="font-medium text-indigo-800">Add:</span>
+                                    <span class="text-indigo-700"> Create new content</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check text-indigo-600 mr-2 mt-1 text-xs"></i>
+                                <div>
+                                    <span class="font-medium text-indigo-800">Change:</span>
+                                    <span class="text-indigo-700"> Edit existing content</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check text-indigo-600 mr-2 mt-1 text-xs"></i>
+                                <div>
+                                    <span class="font-medium text-indigo-800">Delete:</span>
+                                    <span class="text-indigo-700"> Remove content permanently</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
+                        <a href="{% url 'admin-dashboard' %}" 
+                           class="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-times mr-2"></i>Cancel
+                        </a>
+                        <button type="submit" 
+                                class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-plus mr-2"></i>Create Group
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Group Templates -->
+            <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-layer-group text-purple-500 mr-2"></i>
+                    Common Group Templates
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-colors cursor-pointer">
+                        <h4 class="font-semibold text-gray-900 mb-2">Event Moderators</h4>
+                        <p class="text-sm text-gray-600">Can create, edit, and manage events</p>
+                        <div class="mt-2 text-xs text-indigo-600">• View Events • Add Events • Change Events</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-colors cursor-pointer">
+                        <h4 class="font-semibold text-gray-900 mb-2">Content Reviewers</h4>
+                        <p class="text-sm text-gray-600">Can review and approve content</p>
+                        <div class="mt-2 text-xs text-indigo-600">• View All • Change Content</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-colors cursor-pointer">
+                        <h4 class="font-semibold text-gray-900 mb-2">Support Team</h4>
+                        <p class="text-sm text-gray-600">Can assist users and view reports</p>
+                        <div class="mt-2 text-xs text-indigo-600">• View Users • View Events</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
