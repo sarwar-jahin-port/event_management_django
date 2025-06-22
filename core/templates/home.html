@@ -29,14 +29,10 @@
                 </div>
                 
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <button class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <a href="{% url 'public-events' %}" class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg inline-flex items-center">
                         <i class="fas fa-calendar-plus mr-2"></i>
                         Start Planning Your Event
-                    </button>
-                    <button class="border-2 border-white text-white hover:bg-white hover:text-primary-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300">
-                        <i class="fas fa-play mr-2"></i>
-                        Watch Demo
-                    </button>
+                    </a>
                 </div>
                 
                 <div class="flex items-center space-x-8 pt-8">
@@ -58,12 +54,123 @@
             <div class="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto lg:mx-0">
                 <div class="absolute inset-0 bg-gradient-to-r from-primary-400 to-purple-600 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
                 <div class="relative bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl">
-                    <img class='w-full h-auto rounded-xl sm:rounded-2xl' src="{% static "images/hero.svg" %}" alt="Event Management Dashboard"/>
+                    <img class='w-full h-auto rounded-xl sm:rounded-2xl' src="{% static "images/capture.PNG" %}" alt="Event Management Dashboard"/>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Featured Events Section - Add this after your hero section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Upcoming Events</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Discover amazing events happening near you. Join thousands of people creating unforgettable memories.
+                </p>
+            </div>
+
+            {% if events %}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                    {% for event in events %}
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                        <!-- Event Image -->
+                        <div class="relative h-48 overflow-hidden">
+                            {% if event.image %}
+                                <img src="{{ event.image.url }}" alt="{{ event.name }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <img src="{% static "images/event.webp" %}" alt="Default Event Image" class="w-full h-full object-cover">
+                            {% endif %}
+                            
+                            <!-- Category Badge -->
+                            <div class="absolute top-4 left-4">
+                                <span class="bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                                    {{ event.category.name }}
+                                </span>
+                            </div>
+                            
+                            <!-- Date Badge -->
+                            <div class="absolute top-4 right-4">
+                                <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-2 text-center">
+                                    <div class="text-xs font-medium text-gray-600">{{ event.date|date:"M" }}</div>
+                                    <div class="text-lg font-bold text-gray-900">{{ event.date|date:"d" }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Participants Count -->
+                            <div class="absolute bottom-4 left-4">
+                                <div class="bg-black bg-opacity-60 text-white px-3 py-1 rounded-full text-sm flex items-center">
+                                    <i class="fas fa-users mr-1"></i>
+                                    {{ event.participants.count }} attending
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Event Content -->
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">{{ event.name }}</h3>
+                            
+                            <!-- Event Details -->
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-map-marker-alt text-red-500 mr-3 text-sm"></i>
+                                    <span class="text-sm">{{ event.location }}</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-calendar text-primary-500 mr-3 text-sm"></i>
+                                    <span class="text-sm">{{ event.date|date:"F d, Y" }}</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-clock text-orange-500 mr-3 text-sm"></i>
+                                    <span class="text-sm">{{ event.time|time:"g:i A" }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Event Description Preview -->
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                                {{ event.description|truncatewords:15 }}
+                            </p>
+                            
+                            <!-- Action Button -->
+                            <div class="flex gap-3">
+                                <a href="{% url 'show_event' event.id %}" 
+                                   class="flex-1 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-center py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 font-medium">
+                                    <i class="fas fa-eye mr-2"></i>View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- See More Button -->
+                <div class="text-center">
+                    <a href="{% url 'public-events' %}" 
+                       class="bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-flex items-center">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        See All Events
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            {% else %}
+                <!-- No Events State -->
+                <div class="text-center py-16">
+                    <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-calendar-times text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No Upcoming Events</h3>
+                    <p class="text-gray-600 mb-8 max-w-md mx-auto">
+                        There are no upcoming events at the moment. Check back later!
+                    </p>
+                    <a href="{% url 'public-events' %}" 
+                       class="bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                        <i class="fas fa-search mr-2"></i>Browse All Events
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
 
 <!-- Trusted Brands Section -->
 <section class="py-16 bg-white">
