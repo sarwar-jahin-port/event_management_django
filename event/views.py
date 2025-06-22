@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from users.views import is_admin
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, View
+from event.models import Event, Category
 
 def is_organizer(user):
     return user.groups.filter(name='organizer').exists()
@@ -198,3 +199,36 @@ def create_category(request):
     context = {"category_form": category_form}
     return render(request, 'create_category.html', context)
 
+# ADD THIS NEW VIEW FUNCTION:
+def public_events(request):
+    """
+    Public events listing page - accessible to all visitors
+    """
+    # Get all events (adjust the filter based on your needs)
+    events = Event.objects.all().order_by('date')
+    
+    # Get all categories for filtering
+    categories = Category.objects.all()
+    
+    # Search functionality
+    search = request.GET.get('search', '')
+    if search:
+        events = events.filter(
+            Q(name__icontains=search) | 
+            Q(location__icontains=search) | 
+            Q(description__icontains=search)
+        )
+    
+    # Category filtering
+    category_filter = request.GET.get('category', '')
+    if category_filter:
+        events = events.filter(category_id=category_filter)
+    
+    context = {
+        'events': events,
+        'categories': categories,
+        'search': search,
+        'category_filter': category_filter,
+    }
+    
+    return render(request, 'public_events.html', context)

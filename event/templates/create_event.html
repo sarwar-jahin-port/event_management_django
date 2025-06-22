@@ -114,6 +114,40 @@
                                                 <option value="{{ choice.pk }}" {% if choice.pk == field.value %}selected{% endif %}>{{ choice }}</option>
                                             {% endfor %}
                                         </select>
+                                    {% elif field.name == 'participants' %}
+                                        <div class="max-h-60 overflow-y-auto border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                {% for choice in field.field.queryset %}
+                                                    <label class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                                                        <input type="checkbox" name="{{ field.name }}" value="{{ choice.pk }}" 
+                                                               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mr-3"
+                                                               {% if choice.pk in field.value %}checked{% endif %}>
+                                                        <div class="flex items-center">
+                                                            <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">
+                                                                {{ choice.first_name.0|default:choice.username.0|upper }}
+                                                            </div>
+                                                            <div>
+                                                                <div class="font-medium text-gray-900">{{ choice.first_name }} {{ choice.last_name }}</div>
+                                                                <div class="text-sm text-gray-500">@{{ choice.username }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                {% empty %}
+                                                    <div class="col-span-full text-center py-6">
+                                                        <i class="fas fa-users text-gray-300 text-3xl mb-3"></i>
+                                                        <p class="text-gray-500">No users available to select</p>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 flex items-center justify-between text-sm text-gray-600">
+                                            <span>Select participants to invite (optional)</span>
+                                            <div class="flex space-x-2">
+                                                <button type="button" onclick="selectAllParticipants()" class="text-blue-600 hover:text-blue-700 font-medium">Select All</button>
+                                                <span>|</span>
+                                                <button type="button" onclick="clearAllParticipants()" class="text-red-600 hover:text-red-700 font-medium">Clear All</button>
+                                            </div>
+                                        </div>
                                     {% else %}
                                         <input type="{{ field.field.widget.input_type|default:'text' }}" 
                                                name="{{ field.name }}" id="{{ field.id_for_label }}" 
@@ -171,5 +205,41 @@ function previewImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+function selectAllParticipants() {
+    const checkboxes = document.querySelectorAll('input[name="participants"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+        checkbox.closest('label').classList.add('bg-blue-50');
+    });
+}
+
+function clearAllParticipants() {
+    const checkboxes = document.querySelectorAll('input[name="participants"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        checkbox.closest('label').classList.remove('bg-blue-50');
+    });
+}
+
+// Add visual feedback when checkboxes are toggled
+document.addEventListener('DOMContentLoaded', function() {
+    const participantCheckboxes = document.querySelectorAll('input[name="participants"]');
+    participantCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const label = this.closest('label');
+            if (this.checked) {
+                label.classList.add('bg-blue-50', 'border-blue-300');
+            } else {
+                label.classList.remove('bg-blue-50', 'border-blue-300');
+            }
+        });
+        
+        // Set initial state for pre-selected participants
+        if (checkbox.checked) {
+            checkbox.closest('label').classList.add('bg-blue-50', 'border-blue-300');
+        }
+    });
+});
 </script>
 {% endblock content %}
