@@ -7,7 +7,7 @@
                     <i class="fas fa-calendar-alt text-white text-xl"></i>
                 </div>
                 <div class="font-bold text-2xl bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
-                    EventPro
+                    <a href="{% url 'home' %}"> EventPro </a>
                 </div>
             </div>
             
@@ -32,7 +32,7 @@
             </nav>
             
             <!-- Auth Buttons -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2 md:space-x-4">
                 {% if request.user.is_authenticated %}
                     <div class="flex items-center space-x-4">
                         <span class="text-gray-700 font-medium">Welcome, {{ request.user.first_name|default:request.user.username }}!</span>
@@ -46,23 +46,131 @@
                 {% else %}
                     <form action="{% url "sign-in" %}" method="POST" class="inline">
                         {% csrf_token %}
-                        <button type="submit" class="text-gray-700 hover:text-primary-600 font-medium py-2 px-4 rounded-lg transition-colors duration-200">
-                            Sign In
+                        <button type="submit" class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-2 px-2 md:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md">
+                            <i class="fa-solid fa-right-to-bracket mr-2"></i><span class="hidden md:inline-block">Sign In</span>
                         </button>
                     </form>
                     <form action="{% url "sign-up" %}" method="POST" class="inline">
                         {% csrf_token %}
-                        <button type="submit" class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md">
-                            <i class="fas fa-user-plus mr-2"></i>Get Started
+                        <button type="submit" class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-2 px-2 md:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md">
+                            <i class="fas fa-user-plus mr-2"></i><span class="hidden md:inline-block">Get Started</span>
                         </button>
                     </form>
                 {% endif %}
                 
                 <!-- Mobile Menu Button -->
-                <button class="md:hidden text-gray-700 hover:text-primary-600 transition-colors">
-                    <i class="fas fa-bars text-xl"></i>
+                <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-primary-600 transition-colors rounded-md p-2">
+                    <i id="menu-icon" class="fas fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
     </div>
+    
+    <!-- Mobile Menu Dropdown (Fixed positioning outside flex container) -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200 shadow-lg absolute w-full left-0 top-full z-40">
+        <div class="container mx-auto px-6">
+            <div class="py-4 space-y-2">
+                <a href="{% url 'home' %}" class="text-gray-700 hover:text-primary-600 hover:bg-gray-50 flex items-center px-3 py-3 rounded-md text-base font-medium transition-colors">
+                    <i class="fas fa-home mr-3 text-primary-500"></i>Home
+                </a>
+                <a href="{% url 'about' %}" class="text-gray-700 hover:text-primary-600 hover:bg-gray-50 flex items-center px-3 py-3 rounded-md text-base font-medium transition-colors">
+                    <i class="fas fa-info-circle mr-3 text-primary-500"></i>About Us
+                </a>
+                <a href="{% url 'public-events' %}" class="text-gray-700 hover:text-primary-600 hover:bg-gray-50 flex items-center px-3 py-3 rounded-md text-base font-medium transition-colors">
+                    <i class="fas fa-calendar-alt mr-3 text-primary-500"></i>Events
+                </a>
+                <a href="{% url 'contact' %}" class="text-gray-700 hover:text-primary-600 hover:bg-gray-50 flex items-center px-3 py-3 rounded-md text-base font-medium transition-colors">
+                    <i class="fas fa-envelope mr-3 text-primary-500"></i>Contact
+                </a>
+                
+                <!-- Mobile Auth Buttons -->
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    {% if request.user.is_authenticated %}
+                        <div class="space-y-2">
+                            <div class="text-center py-2">
+                                <span class="text-gray-700 font-medium">Welcome, {{ request.user.first_name|default:request.user.username }}!</span>
+                            </div>
+                            <form action="{% url "logout" %}" method="POST" class="w-full">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors duration-200">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                </button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="space-y-2">
+                            <form action="{% url "sign-in" %}" method="POST" class="w-full">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md">
+                                    <i class="fa-solid fa-right-to-bracket mr-2"></i>Sign In
+                                </button>
+                            </form>
+                            <form action="{% url "sign-up" %}" method="POST" class="w-full">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-user-plus mr-2"></i>Get Started
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
+
+<script>
+    // Mobile menu toggle functionality
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    // Toggle mobile menu
+    mobileMenuButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        // Toggle the menu visibility
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle the icon between hamburger and close
+        if (mobileMenu.classList.contains('hidden')) {
+            menuIcon.classList.remove('fa-times');
+            menuIcon.classList.add('fa-bars');
+        } else {
+            menuIcon.classList.remove('fa-bars');
+            menuIcon.classList.add('fa-times');
+        }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const isClickInsideMenu = mobileMenu.contains(event.target);
+        const isClickOnButton = mobileMenuButton.contains(event.target);
+        
+        if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains('hidden')) {
+            closeMobileMenu();
+        }
+    });
+
+    // Close mobile menu when window is resized to desktop view
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) { // md breakpoint
+            closeMobileMenu();
+        }
+    });
+
+    // Close mobile menu when clicking on a menu item
+    const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            closeMobileMenu();
+        });
+    });
+
+    // Function to close mobile menu
+    function closeMobileMenu() {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('fa-times');
+        menuIcon.classList.add('fa-bars');
+    }
+</script>
